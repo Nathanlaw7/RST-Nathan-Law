@@ -8,12 +8,12 @@ import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.Random;
-
+import java.io.BufferedWriter;
 import javax.swing.JOptionPane;
 
 
@@ -143,18 +143,21 @@ public class SnakeCanvas extends Canvas implements Runnable, KeyListener
 		else if (newPoint.x < 0 || newPoint.x > Grid_Width - 1)
 		{
 			//The snake is off the grid, and you restart
+			CheckScore();
 			generateDefaultSnake();
 			return;
 		}
 		else if (newPoint.y < 0 || newPoint.y > Grid_Height - 1)
 		{
 			//The snake is off the grid, and you restart
+			CheckScore();
 			generateDefaultSnake();
 			return;
 		}
 		else if (snake.contains(newPoint))
 		{
 			//why ya hitting yourself? darn you restart
+			CheckScore();
 			generateDefaultSnake();
 			return;
 		}
@@ -172,6 +175,8 @@ public class SnakeCanvas extends Canvas implements Runnable, KeyListener
 
 	public void CheckScore()
 	{
+		if (highscore.equals(""))
+			return;
 		//format Nathan/:/###
 		if (score > Integer.parseInt((highscore.split(":")[1])))
 		{
@@ -182,7 +187,32 @@ public class SnakeCanvas extends Canvas implements Runnable, KeyListener
 			File scoreFile = new File("highscore.dat");
 			if (!scoreFile.exists())
 			{
-				
+				try {
+					scoreFile.createNewFile();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			FileWriter writeFile = null;
+			BufferedWriter writer = null;
+			try
+			{
+				writeFile = new FileWriter(scoreFile);
+				writer = new BufferedWriter(writeFile);
+				writer.write(this.highscore);
+			} 
+			catch (Exception e)
+			{
+				//errors
+			}
+			finally
+			{
+				try
+				{
+					if (writer != null)
+						writer.close();
+				}
+				catch (Exception e) {}
 			}
 		}
 	}
@@ -273,7 +303,7 @@ public class SnakeCanvas extends Canvas implements Runnable, KeyListener
 		
 		catch (Exception e)
 		{
-			return "0";
+			return "Nobody:0";
 		}
 		finally
 		{
@@ -314,13 +344,11 @@ public class SnakeCanvas extends Canvas implements Runnable, KeyListener
 
 	@Override
 	public void keyReleased(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
 	public void keyTyped(KeyEvent arg0) {
-		// TODO Auto-generated method stub
 		
 	}
 }
