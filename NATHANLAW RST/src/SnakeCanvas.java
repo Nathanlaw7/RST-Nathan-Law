@@ -20,6 +20,7 @@ import javax.swing.JOptionPane;
 
 public class SnakeCanvas extends Canvas implements Runnable, KeyListener
 {
+	//Nathan Law RST Speed Snake. started June 8, 2017 and finished June 16, 2017.
 	//creating the GRID
 	private final int Box_Height = 15;
 	private final int Box_Width = 15;
@@ -37,6 +38,7 @@ public class SnakeCanvas extends Canvas implements Runnable, KeyListener
 	
 	public void paint(Graphics g)
 	{
+		//placing everything in with this paint tool
 		this.setPreferredSize(new Dimension (1280, 720));
 		this.addKeyListener(this);
 		if (snake == null)
@@ -66,7 +68,7 @@ public class SnakeCanvas extends Canvas implements Runnable, KeyListener
 	
 	public void update(Graphics g)
 	{
-		//his will contain the double buffering
+		//this will contain the double buffering which makes it less laggy
 		Graphics offscreenGraphics; //these are the graphics use to draw offscreen
 		BufferedImage offscreen = null;
 		Dimension d = this.getSize();
@@ -97,6 +99,7 @@ public class SnakeCanvas extends Canvas implements Runnable, KeyListener
 
 	public void Move()
 	{
+		//all moves are here and stops you if you going the wrong direction
 		Point Head = snake.peekFirst();
 		Point newPoint = Head;
 		switch (direction) {
